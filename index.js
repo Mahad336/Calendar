@@ -1,28 +1,28 @@
 const data = [
   {
-    StartTime: "02:00",
+    StartTime: "01:00",
     EndTime: "03:00",
     itemName: "Sample Item",
     itemLoc: "Sample Location",
   },
   {
-    StartTime: "03:00",
-    EndTime: "05:00",
+    StartTime: "05:00",
+    EndTime: "06:30",
     itemName: "Sample Item",
     itemLoc: "Sample Location",
   },
-  // {
-  //   StartTime: "03:00",
-  //   EndTime: "04:00",
-  //   itemName: "Sample Item",
-  //   itemLoc: "Sample Location",
-  // },
-  // {
-  //   StartTime: "04:00",
-  //   EndTime: "07:00",
-  //   itemName: "Sample Item",
-  //   itemLoc: "Sample Location",
-  // },
+  {
+    StartTime: "06:00",
+    EndTime: "07:30",
+    itemName: "Sample Item",
+    itemLoc: "Sample Location",
+  },
+  {
+    StartTime: "07:00",
+    EndTime: "08:00",
+    itemName: "Sample Item",
+    itemLoc: "Sample Location",
+  },
 ];
 
 let divvv = `<div class="populate-target-parent">
@@ -64,14 +64,47 @@ function makeTimes(startTime, endTime) {
   StrTimetoInt(endTime) < 8.8 //actually 9
     ? (endTime = StrTimetoInt(endTime) + 12)
     : (endTime = StrTimetoInt(endTime));
-
+  //making to collect right collisons
+  startTime = startTime + 0.5;
   while (startTime <= endTime) {
     times.push(intToStrTime(startTime));
     startTime = startTime + 0.5;
   }
   return times;
 }
-console.log(makeTimes("09:00", "02:00"));
+
+console.log(makeTimes("10:00", "12:00"));
+let eventCollisonsData = [];
+let eventCollisonsDataCounter = 0;
+let allEventTimes = [];
+let overlappedCount = 0;
+// data
+//   .filter((e) => e.StartTime != startTime && e.EndTime != endTime)
+data.map((e) => {
+  allEventTimes.push(makeTimes(e.StartTime, e.EndTime));
+});
+
+/////Making all collisions data
+for (let i = 0; i < data.length; i++) {
+  let currMakeTime = makeTimes(data[i].StartTime, data[i].EndTime);
+  for (j = 0; j < data.length; j++) {
+    if (j == i) continue;
+    else {
+      allEventTimes[j].map((e) => {
+        if (currMakeTime.includes(e)) {
+          //solution while eventCollisonData[i] is undefined
+          eventCollisonsData[i] == undefined
+            ? (eventCollisonsData[i] = "")
+            : (eventCollisonsData[i] = eventCollisonsData[i]);
+
+          eventCollisonsData[i].includes(j)
+            ? eventCollisonsData[i]
+            : (eventCollisonsData[i] += j);
+        }
+      });
+    }
+  }
+}
 
 function DisplayEvent(startTime, endTime) {
   let first;
@@ -86,15 +119,26 @@ function DisplayEvent(startTime, endTime) {
   for (let i = 0; i < hours.length; i++) {
     if (hours[i].textContent.substring(13, 18) == startTime) {
       first = hours[i].offsetTop;
-      target[i].innerHTML = divvv + divvv;
+      target[i].innerHTML = divvv;
       target[i].style.display = "flex";
-      target[i].style.flex = "1 1 auto";
       populateTarget = target[i].childNodes[0].childNodes[3];
 
+      let CurrnumOfEventCollisons =
+        eventCollisonsData[eventCollisonsDataCounter] != null
+          ? eventCollisonsData[eventCollisonsDataCounter].length
+          : 0;
+      console.log(CurrnumOfEventCollisons);
+
       let offsetRight = window.innerWidth - target[i].offsetLeft * 1.8; //or acutally 2 ;
-      target[i].childNodes.forEach((e) => (e.style.flex = "1 1 auto"));
-      target[i].style.width = `${offsetRight}px`;
+      // target[i].childNodes.forEach((e) => (e.style.flex = "1 1 auto"));
+      console.log(offsetRight);
+      target[i].childNodes.forEach(
+        (e) =>
+          (e.style.width = `${offsetRight / (CurrnumOfEventCollisons + 1)}px`)
+      );
+      //target[i].style.width = `${offsetRight}px`;
       hourStartBoolean = true;
+      eventCollisonsDataCounter++;
     }
     if (hours[i].textContent.substring(13, 18) == endTime) {
       second = hours[i].offsetTop;
