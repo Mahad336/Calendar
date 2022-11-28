@@ -1,0 +1,154 @@
+body{
+    margin: 0;
+    padding: 0;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+.main-container{
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+}
+.sec1-text{
+    padding: 15px 20px;
+    font-size: large;
+}
+.section1{
+    display: flex;
+    justify-content: right; 
+}
+
+.section2{
+    display: flex;
+    background-color: rgb(211, 211, 211,0.6);
+    padding: 5px 0px 5px 260px;
+    border-right: 0;
+    border-bottom: 1px solid black;
+    border-top: 1px solid black;
+}
+
+.section2-right{     
+    display: flex;
+    background-color: white;
+    width: 100%
+}
+.section2-right_left{
+   min-width: 10px;
+   background-color:rgb(0, 128, 0,0.7);
+
+}
+.section2-right_right{
+    display: flex;
+    padding: 13px 0px 13px 13px;
+}
+.section2-right_right p{
+    margin: auto 7px;
+    padding: 0;
+    font-size: 17.1px;
+    font-weight: 200;
+}
+.time{
+    padding-left: 1px;
+    color: gray;
+    width: fit-content;
+
+}
+.sample-time {
+    padding-left: 1px;
+    color: black;
+    width: fit-content;
+    
+}
+.sample-loc {
+    padding-left: 1px;
+    color: darkgreen;
+
+}
+
+.section3{
+    display: flex;
+}
+.section3-right{
+    
+    width: 95%;
+}
+ 
+.AM{
+ font-size: 40px;
+ padding: 15px 40px 171.8px 20px;
+ margin: 0;
+ color: rgb(237, 30, 121)
+ 
+}
+.PM{
+border-top: 1px solid black;
+padding: 15px 40px 150px 20px;
+font-size: 40px;
+color: #3FA9F5;
+}
+
+.section3-right-1hour{
+    font-size: 20px;
+    font-weight: bold;
+    padding-top: 10px;
+    height: 80px;
+    border-bottom: 1px solid black;
+    position: relative;
+}
+.section3-right-half-hour{
+    display: flex;
+    font-weight: 100;
+
+    
+}
+.half-hour-1{
+    height: 10px;
+}
+.half-hour-2{
+border-top: 1px solid rgb(0, 0, 0,0.4);
+margin-left: 80px;
+font-size: 15px;
+/* width: ; */
+z-index: 2;
+}
+.populate{
+    position: absolute;
+    /*left: 140px; || padding-left: 7.6vw;*/
+    left: 140px;
+    top: 0;
+    border: 0;
+    margin: 0;
+    z-index: 4; 
+    background-color: white;
+
+
+}
+.populate-target{
+    display: flex;
+
+    /* 92%/1617px is ramining width for my laptops full screen*/
+
+}
+.populate-target-parent{
+        
+        display: flex;
+}
+
+.populate-target p{
+
+ padding-left: 7px;
+ font-size: 17.1px;
+ font-weight: 200;
+    padding: 0;
+    margin: 11px;
+    margin-left: 9.2px;
+    
+    }
+.half-hour-populate{
+position: absolute;
+    left: 140px;
+    top: 0;
+    border: 0;
+    margin: 0;
+    z-index: 4;
+    background-color: white;
+}
