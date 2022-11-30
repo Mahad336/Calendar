@@ -1,36 +1,4 @@
-const data = [
-  {
-    StartTime: "01:30",
-    EndTime: "04:00",
-    itemName: "Sample Item",
-    itemLoc: "Sample Location",
-  },
-  {
-    StartTime: "03:00",
-    EndTime: "04:00",
-    itemName: "Sample Item",
-    itemLoc: "Sample Location",
-  },
-  {
-    StartTime: "11:00",
-    EndTime: "05:00",
-    itemName: "Sample Item",
-    itemLoc: "Sample Location",
-  },
-  {
-    StartTime: "09:30",
-    EndTime: "06:00",
-    itemName: "Sample Item",
-    itemLoc: "Sample Location",
-  },
-  // {
-  //   StartTime: "12:00",
-  //   EndTime: "08:00",
-  //   itemName: "Sample Item",
-  //   itemLoc: "Sample Location",
-  // },
-];
-
+import { data, fullDayEvent } from "./data.js";
 let divvv = `<div class="populate-target-parent">
           <div class="section2-right_left"></div>
 
@@ -92,7 +60,7 @@ data.map((e) => {
 /////Making all collisions data
 for (let i = 0; i < data.length; i++) {
   let currMakeTime = makeTimes(data[i].StartTime, data[i].EndTime);
-  for (j = 0; j < data.length; j++) {
+  for (let j = 0; j < data.length; j++) {
     if (j == i) continue;
     else {
       allEventTimes[j].map((e) => {
@@ -111,7 +79,27 @@ for (let i = 0; i < data.length; i++) {
   }
 }
 
-function DisplayEvent(startTime, endTime) {
+let targetAllday = document.querySelector(".allDay");
+
+function fullDayEventt(name, loc) {
+  targetAllday.innerHTML =
+    targetAllday.innerHTML +
+    `<div class="section2">
+        <div class="section2-right">
+          <div class="section2-right_left"></div>
+
+          <div class="section2-right_right">
+            <p class="time">All Day-</p>
+            <p class="sample-item">${name}</p>
+            <p class="sample-loc">${loc}</p>
+          </div>
+        </div>
+      </div>`;
+}
+
+fullDayEvent.forEach((e) => fullDayEventt(e.itemName, e.itemLoc));
+
+function DisplayEvent(startTime, endTime, namee, locc) {
   let first;
   let second;
   let populateTarget;
@@ -127,6 +115,9 @@ function DisplayEvent(startTime, endTime) {
     if (hours[i].textContent.substring(13, 18) == startTime) {
       first = hours[i].offsetTop;
       target[i].innerHTML = divvv;
+      target[i].childNodes[0].childNodes[3].childNodes[3].innerHTML = namee;
+      target[i].childNodes[0].childNodes[3].childNodes[5].innerHTML = locc;
+
       target[i].style.display = "flex";
       populateTarget = target[i].childNodes[0].childNodes[3];
 
@@ -195,6 +186,10 @@ function DisplayEvent(startTime, endTime) {
     if (halfHours[i].textContent == startTime) {
       //first = halfHours[i].offsetTop;
       halfHourTarget[i].innerHTML = divvv;
+      halfHourTarget[i].childNodes[0].childNodes[3].childNodes[3].innerHTML =
+        namee;
+      halfHourTarget[i].childNodes[0].childNodes[3].childNodes[5].innerHTML =
+        locc;
       halfHourTarget[i].style.top = "45px";
       //setting popluate length respective to hours[i]
       first = hours[i].offsetTop;
@@ -235,17 +230,15 @@ function DisplayEvent(startTime, endTime) {
         : followingCollisions;
       for (let i = 0; i < followingCollisions.length; i++) {
         let index = eventCollisonsDataCounter;
-        if (followingCollisions[i] != null) {
-          if (index < followingCollisions[i]) {
-            lefttt = lefttt + Width * i;
-            break;
-          }
-          if (
-            i == followingCollisions.length - 1 &&
-            index >= followingCollisions[i]
-          )
-            lefttt = lefttt + Width * followingCollisions.length;
+        if (index < followingCollisions[i]) {
+          lefttt = lefttt + Width * i;
+          break;
         }
+        if (
+          i == followingCollisions.length - 1 &&
+          index >= followingCollisions[i]
+        )
+          lefttt = lefttt + Width * followingCollisions.length;
       }
       // At last setting width
       halfHourTarget[i].style.left = `${lefttt}px`;
@@ -275,7 +268,6 @@ function DisplayEvent(startTime, endTime) {
       diff = (hours[i].offsetTop - hours[i > 0 ? i - 1 : i].offsetTop) / 2;
       second = second - diff;
     }
-    /
   }
 
   let eventHeight = second - first;
@@ -283,8 +275,5 @@ function DisplayEvent(startTime, endTime) {
 }
 
 data.map((e) => {
-  DisplayEvent(
-    e.StartTime,
-    e.EndTime == "09:00" ? (e.EndTime = "08:30") : e.EndTime
-  );
+  DisplayEvent(e.StartTime, e.EndTime, e.itemName, e.itemLoc);
 });
