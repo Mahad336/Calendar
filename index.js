@@ -1,28 +1,34 @@
 const data = [
   {
-    StartTime: "05:00",
-    EndTime: "08:00",
+    StartTime: "01:30",
+    EndTime: "04:00",
+    itemName: "Sample Item",
+    itemLoc: "Sample Location",
+  },
+  {
+    StartTime: "03:00",
+    EndTime: "04:00",
+    itemName: "Sample Item",
+    itemLoc: "Sample Location",
+  },
+  {
+    StartTime: "11:00",
+    EndTime: "05:00",
+    itemName: "Sample Item",
+    itemLoc: "Sample Location",
+  },
+  {
+    StartTime: "09:30",
+    EndTime: "06:00",
     itemName: "Sample Item",
     itemLoc: "Sample Location",
   },
   // {
-  //   StartTime: "03:00",
-  //   EndTime: "05:00",
+  //   StartTime: "12:00",
+  //   EndTime: "08:00",
   //   itemName: "Sample Item",
   //   itemLoc: "Sample Location",
   // },
-  {
-    StartTime: "06:00",
-    EndTime: "07:00",
-    itemName: "Sample Item",
-    itemLoc: "Sample Location",
-  },
-  {
-    StartTime: "07:00",
-    EndTime: "08:00",
-    itemName: "Sample Item",
-    itemLoc: "Sample Location",
-  },
 ];
 
 let divvv = `<div class="populate-target-parent">
@@ -115,6 +121,8 @@ function DisplayEvent(startTime, endTime) {
   let hourStartBoolean = false;
   let populateTargetParent;
 
+  if (endTime == "09:00") endTime = "08:30";
+
   for (let i = 0; i < hours.length; i++) {
     if (hours[i].textContent.substring(13, 18) == startTime) {
       first = hours[i].offsetTop;
@@ -140,27 +148,17 @@ function DisplayEvent(startTime, endTime) {
       }
 
       let offsetRight = window.innerWidth - target[i].offsetLeft * 1.8; //or acutally 2 ;
-      // target[i].childNodes.forEach((e) => (e.style.flex = "1 1 auto"));
 
-      // target[i].childNodes.forEach(
-      //   (e) => (e.style.width = `${offsetRight / (findMaxEventLinkedandWidth() + 1)}px`)
-      // );
       target[i].style.width = `${
         offsetRight / (findMaxEventLinkedandWidth() + 1)
       }px`; //the above sol is absolutely right
       hourStartBoolean = true;
 
-      if (startTime == "07:00") {
-      }
       /////////Positiong/////////////
 
       let max = findMaxEventLinkedandWidth();
       let followingCollisions = eventCollisonsData[eventCollisonsDataCounter];
-      console.log(followingCollisions);
-      //12
-      //02
-      //01
-      // let lefttt = parseInt(target[i].style.width);
+
       let lefttt = 140;
       let Width = parseInt(target[i].style.width);
       followingCollisions == null
@@ -181,8 +179,7 @@ function DisplayEvent(startTime, endTime) {
             lefttt = lefttt + Width * followingCollisions.length;
         }
       }
-      console.log(max);
-      // console.log(lefttt);
+
       // At last setting width
       target[i].style.left = `${lefttt}px`;
 
@@ -202,7 +199,62 @@ function DisplayEvent(startTime, endTime) {
       //setting popluate length respective to hours[i]
       first = hours[i].offsetTop;
       populateTarget = halfHourTarget[i].childNodes[0].childNodes[3];
+
+      let CurrnumOfEventCollisons =
+        eventCollisonsData[eventCollisonsDataCounter] != null
+          ? eventCollisonsData[eventCollisonsDataCounter].length
+          : 0;
+
+      function findMaxEventLinkedandWidth() {
+        if (eventCollisonsData[eventCollisonsDataCounter] != null) {
+          let colllisions = eventCollisonsData[eventCollisonsDataCounter];
+          let max = CurrnumOfEventCollisons;
+          for (let i = 0; i < colllisions.length; i++) {
+            if (eventCollisonsData[colllisions[i]].length > max)
+              max = eventCollisonsData[colllisions[i]].length;
+          }
+          return max;
+        } else return 0;
+      }
+
+      let offsetRight = window.innerWidth - halfHourTarget[i].offsetLeft * 1.8; //or acutally 2 ;
+
+      halfHourTarget[i].style.width = `${
+        offsetRight / (findMaxEventLinkedandWidth() + 1)
+      }px`; //the above sol is absolutely right
+
+      /////////Positiong/////////////
+
+      let max = findMaxEventLinkedandWidth();
+      let followingCollisions = eventCollisonsData[eventCollisonsDataCounter];
+
+      let lefttt = 140;
+      let Width = parseInt(halfHourTarget[i].style.width);
+      followingCollisions == null
+        ? (followingCollisions = 0)
+        : followingCollisions;
+      for (let i = 0; i < followingCollisions.length; i++) {
+        let index = eventCollisonsDataCounter;
+        if (followingCollisions[i] != null) {
+          if (index < followingCollisions[i]) {
+            lefttt = lefttt + Width * i;
+            break;
+          }
+          if (
+            i == followingCollisions.length - 1 &&
+            index >= followingCollisions[i]
+          )
+            lefttt = lefttt + Width * followingCollisions.length;
+        }
+      }
+      // At last setting width
+      halfHourTarget[i].style.left = `${lefttt}px`;
+
+      /////incrementing Counter Variable
+
+      eventCollisonsDataCounter++;
     }
+
     if (halfHours[i].textContent == endTime) {
       second = hours[i].offsetTop;
     }
@@ -223,14 +275,7 @@ function DisplayEvent(startTime, endTime) {
       diff = (hours[i].offsetTop - hours[i > 0 ? i - 1 : i].offsetTop) / 2;
       second = second - diff;
     }
-    //if end time is 9 then stretching to 9
-    if (endTime == "09:00") {
-      second =
-        hours[hours.length - 1].offsetTop +
-        (hours[hours.length - 1].offsetTop -
-          hours[hours.length - 2].offsetTop) /
-          2;
-    }
+    /
   }
 
   let eventHeight = second - first;
@@ -238,5 +283,8 @@ function DisplayEvent(startTime, endTime) {
 }
 
 data.map((e) => {
-  DisplayEvent(e.StartTime, e.EndTime);
+  DisplayEvent(
+    e.StartTime,
+    e.EndTime == "09:00" ? (e.EndTime = "08:30") : e.EndTime
+  );
 });
