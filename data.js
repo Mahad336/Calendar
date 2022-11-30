@@ -6,20 +6,33 @@ const data = [
     itemLoc: "Sample Location 1",
   },
   {
-    StartTime: "05:00",
-    EndTime: "05:30",
+    StartTime: "02:30",
+    EndTime: "06:30",
     itemName: "Sample Item 2",
     itemLoc: "Sample Location 2",
   },
-  // {
-  //   StartTime: "12:00",
-  //   EndTime: "02:30",
-  //   itemName: "Sample Item 2",
-  //   itemLoc: "Sample Location 2",
-  // },
   {
-    StartTime: "09:00",
-    EndTime: "06:30",
+    StartTime: "02:00",
+    EndTime: "05:00",
+    itemName: "Sample Item 2",
+    itemLoc: "Sample Location 2",
+  },
+
+  {
+    StartTime: "03:30",
+    EndTime: "05:00",
+    itemName: "Sample Item 2",
+    itemLoc: "Sample Location 2",
+  },
+  {
+    StartTime: "04:30",
+    EndTime: "06:00",
+    itemName: "Sample Item 2",
+    itemLoc: "Sample Location 2",
+  },
+  {
+    StartTime: "04:00",
+    EndTime: "06:00",
     itemName: "Sample Item 2",
     itemLoc: "Sample Location 2",
   },
@@ -28,7 +41,7 @@ const data = [
 const fullDayEvent = [
   {
     itemName: "Mission",
-    itemLoc: "Gigalabs",
+    itemLoc: "Karachi",
   },
   {
     itemName: "Abdullah",

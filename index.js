@@ -241,14 +241,21 @@ function DisplayEvent(startTime, endTime, namee, locc) {
       for (let i = 0; i < followingCollisions.length; i++) {
         let index = eventCollisonsDataCounter;
         if (index < followingCollisions[i]) {
-          lefttt = lefttt + Width * i;
+          let n = 0;
+          if (index > 0 && index != followingCollisions.length - 1) {
+            if (followingCollisions.length < max) n = 1;
+          }
+          lefttt = lefttt + Width * (i + n);
           break;
         }
         if (
           i == followingCollisions.length - 1 &&
           index >= followingCollisions[i]
-        )
-          lefttt = lefttt + Width * followingCollisions.length;
+        ) {
+          let numm = 0;
+          if (followingCollisions.length < max) numm = 1;
+          lefttt = lefttt + Width * (followingCollisions.length + numm);
+        }
       }
       // At last setting width
       halfHourTarget[i].style.left = `${lefttt}px`;
