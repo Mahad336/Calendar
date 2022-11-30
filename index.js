@@ -150,24 +150,34 @@ function DisplayEvent(startTime, endTime, namee, locc) {
       let max = findMaxEventLinkedandWidth();
       let followingCollisions = eventCollisonsData[eventCollisonsDataCounter];
 
+      //console.log(max);
+      //console.log(followingCollisions.length);
+
       let lefttt = 140;
       let Width = parseInt(target[i].style.width);
+
       followingCollisions == null
         ? (followingCollisions = 0)
         : followingCollisions;
+
+      //console.log(typeof (max < followingCollisions.length ? i : i + 1));
       for (let i = 0; i < followingCollisions.length; i++) {
         let index = eventCollisonsDataCounter;
-        if (followingCollisions[i] != null) {
-          //console.log(followingCollisions[i]);
-          if (index < followingCollisions[i]) {
-            lefttt = lefttt + Width * i;
-            break;
+        if (index < followingCollisions[i]) {
+          let n = 0;
+          if (index > 0 && index != followingCollisions.length - 1) {
+            if (followingCollisions.length < max) n = 1;
           }
-          if (
-            i == followingCollisions.length - 1 &&
-            index >= followingCollisions[i]
-          )
-            lefttt = lefttt + Width * followingCollisions.length;
+          lefttt = lefttt + Width * (i + n);
+          break;
+        }
+        if (
+          i == followingCollisions.length - 1 &&
+          index >= followingCollisions[i]
+        ) {
+          let numm = 0;
+          if (followingCollisions.length < max) numm = 1;
+          lefttt = lefttt + Width * (followingCollisions.length + numm);
         }
       }
 
