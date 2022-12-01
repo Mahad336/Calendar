@@ -117,10 +117,8 @@ function DisplayEvent(startTime, endTime, namee, locc) {
       target[i].innerHTML = divvv;
       target[i].childNodes[0].childNodes[3].childNodes[3].innerHTML = namee;
       target[i].childNodes[0].childNodes[3].childNodes[5].innerHTML = locc;
-
       target[i].style.display = "flex";
       populateTarget = target[i].childNodes[0].childNodes[3];
-
       let CurrnumOfEventCollisons =
         eventCollisonsData[eventCollisonsDataCounter] != null
           ? eventCollisonsData[eventCollisonsDataCounter].length
@@ -182,7 +180,7 @@ function DisplayEvent(startTime, endTime, namee, locc) {
       }
 
       // At last setting width
-      target[i].style.left = `${lefttt}px`;
+      target[i].style.left = `${lefttt + 4}px`;
 
       /////incrementing Counter Variable
 
@@ -258,7 +256,7 @@ function DisplayEvent(startTime, endTime, namee, locc) {
         }
       }
       // At last setting width
-      halfHourTarget[i].style.left = `${lefttt}px`;
+      halfHourTarget[i].style.left = `${lefttt + 4}px`;
 
       /////incrementing Counter Variable
 
@@ -288,7 +286,11 @@ function DisplayEvent(startTime, endTime, namee, locc) {
   }
 
   let eventHeight = second - first;
+
   populateTarget.style.height = `${eventHeight - 3}px`;
+  parseInt(eventHeight) > 92
+    ? (populateTarget.style.flexDirection = "column")
+    : (populateTarget.style.flexDirection = "row");
 }
 
 data.map((e) => {
