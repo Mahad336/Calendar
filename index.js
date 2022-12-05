@@ -98,6 +98,7 @@ function fullDayEventt(name, loc) {
 }
 
 fullDayEvent.forEach((e) => fullDayEventt(e.itemName, e.itemLoc));
+let map = new Map();
 
 function DisplayEvent(startTime, endTime, namee, locc) {
   let first;
@@ -113,78 +114,103 @@ function DisplayEvent(startTime, endTime, namee, locc) {
 
   for (let i = 0; i < hours.length; i++) {
     if (hours[i].textContent.substring(13, 18) == startTime) {
-      first = hours[i].offsetTop;
-      target[i].innerHTML = divvv;
-      target[i].childNodes[0].childNodes[3].childNodes[3].innerHTML = namee;
-      target[i].childNodes[0].childNodes[3].childNodes[5].innerHTML = locc;
-      target[i].style.display = "flex";
-      populateTarget = target[i].childNodes[0].childNodes[3];
-      let CurrnumOfEventCollisons =
-        eventCollisonsData[eventCollisonsDataCounter] != null
-          ? eventCollisonsData[eventCollisonsDataCounter].length
-          : 0;
+      if (Array.from(map.values()).includes(startTime)) {
+        let eventNum =
+          [...map].find(([key, value]) => startTime === value)[0] + 2;
+        first = hours[i].offsetTop;
+        let tempdiv = [];
+        tempdiv[0] = target[eventNum].innerHTML;
+        tempdiv[1] = divvv;
+        target[eventNum].innerHTML = tempdiv;
+        target[eventNum].childNodes[2].childNodes[3].childNodes[3].innerHTML =
+          namee;
+        target[eventNum].childNodes[2].childNodes[3].childNodes[5].innerHTML =
+          locc;
+        target[eventNum].style.backgroundColor = "transparent";
+        populateTarget = target[eventNum].childNodes[2].childNodes[3];
+        populateTarget.style.backgroundColor = "white";
+        target[eventNum].childNodes[0].childNodes[3].style.backgroundColor =
+          "white";
+        target[eventNum].childNodes[0].childNodes[1].style.height =
+          target[eventNum].childNodes[0].childNodes[3].style.height;
+        target[eventNum].childNodes[1].textContent = "";
+        hourStartBoolean = true;
+        eventCollisonsDataCounter++;
+      } else {
+        map.set(eventCollisonsDataCounter, startTime);
+        first = hours[i].offsetTop;
+        target[i].innerHTML = divvv;
+        target[i].childNodes[0].childNodes[3].childNodes[3].innerHTML = namee;
+        target[i].childNodes[0].childNodes[3].childNodes[5].innerHTML = locc;
+        target[i].style.display = "flex";
+        populateTarget = target[i].childNodes[0].childNodes[3];
+        let CurrnumOfEventCollisons =
+          eventCollisonsData[eventCollisonsDataCounter] != null
+            ? eventCollisonsData[eventCollisonsDataCounter].length
+            : 0;
 
-      function findMaxEventLinkedandWidth() {
-        if (eventCollisonsData[eventCollisonsDataCounter] != null) {
-          let colllisions = eventCollisonsData[eventCollisonsDataCounter];
-          let max = CurrnumOfEventCollisons;
-          for (let i = 0; i < colllisions.length; i++) {
-            if (eventCollisonsData[colllisions[i]].length > max)
-              max = eventCollisonsData[colllisions[i]].length;
-          }
-          return max;
-        } else return 0;
-      }
-
-      let offsetRight = window.innerWidth - target[i].offsetLeft * 1.8; //or acutally 2 ;
-
-      target[i].style.width = `${
-        offsetRight / (findMaxEventLinkedandWidth() + 1)
-      }px`; //the above sol is absolutely right
-      hourStartBoolean = true;
-
-      /////////Positiong/////////////
-
-      let max = findMaxEventLinkedandWidth();
-      let followingCollisions = eventCollisonsData[eventCollisonsDataCounter];
-
-      //console.log(max);
-      //console.log(followingCollisions.length);
-
-      let lefttt = 140;
-      let Width = parseInt(target[i].style.width);
-
-      followingCollisions == null
-        ? (followingCollisions = 0)
-        : followingCollisions;
-
-      //console.log(typeof (max < followingCollisions.length ? i : i + 1));
-      for (let i = 0; i < followingCollisions.length; i++) {
-        let index = eventCollisonsDataCounter;
-        if (index < followingCollisions[i]) {
-          let n = 0;
-          if (index > 0 && index != followingCollisions.length - 1) {
-            if (followingCollisions.length < max) n = 1;
-          }
-          lefttt = lefttt + Width * (i + n);
-          break;
+        function findMaxEventLinkedandWidth() {
+          if (eventCollisonsData[eventCollisonsDataCounter] != null) {
+            let colllisions = eventCollisonsData[eventCollisonsDataCounter];
+            let max = CurrnumOfEventCollisons;
+            for (let i = 0; i < colllisions.length; i++) {
+              if (eventCollisonsData[colllisions[i]].length > max)
+                max = eventCollisonsData[colllisions[i]].length;
+            }
+            return max;
+          } else return 0;
         }
-        if (
-          i == followingCollisions.length - 1 &&
-          index >= followingCollisions[i]
-        ) {
-          let numm = 0;
-          if (followingCollisions.length < max) numm = 1;
-          lefttt = lefttt + Width * (followingCollisions.length + numm);
+
+        let offsetRight = window.innerWidth - target[i].offsetLeft * 1.8; //or acutally 2 ;
+
+        target[i].style.width = `${
+          offsetRight / (findMaxEventLinkedandWidth() + 1)
+        }px`; //the above sol is absolutely right
+        hourStartBoolean = true;
+
+        /////////Positiong/////////////
+
+        let max = findMaxEventLinkedandWidth();
+        let followingCollisions = eventCollisonsData[eventCollisonsDataCounter];
+
+        //console.log(max);
+        //console.log(followingCollisions.length);
+
+        let lefttt = 140;
+        let Width = parseInt(target[i].style.width);
+
+        followingCollisions == null
+          ? (followingCollisions = 0)
+          : followingCollisions;
+
+        //console.log(typeof (max < followingCollisions.length ? i : i + 1));
+        for (let i = 0; i < followingCollisions.length; i++) {
+          let index = eventCollisonsDataCounter;
+          if (index < followingCollisions[i]) {
+            let n = 0;
+            if (index > 0 && index != followingCollisions.length - 1) {
+              if (followingCollisions.length < max) n = 1;
+            }
+            lefttt = lefttt + Width * (i + n);
+            break;
+          }
+          if (
+            i == followingCollisions.length - 1 &&
+            index >= followingCollisions[i]
+          ) {
+            let numm = 0;
+            if (followingCollisions.length < max) numm = 1;
+            lefttt = lefttt + Width * (followingCollisions.length + numm);
+          }
         }
+
+        // At last setting width
+        target[i].style.left = `${lefttt + 4}px`;
+
+        /////incrementing Counter Variable
+
+        eventCollisonsDataCounter++;
       }
-
-      // At last setting width
-      target[i].style.left = `${lefttt + 4}px`;
-
-      /////incrementing Counter Variable
-
-      eventCollisonsDataCounter++;
     }
     if (hours[i].textContent.substring(13, 18) == endTime) {
       second = hours[i].offsetTop;
@@ -192,6 +218,7 @@ function DisplayEvent(startTime, endTime, namee, locc) {
     }
 
     if (halfHours[i].textContent == startTime) {
+      map.set(eventCollisonsDataCounter, startTime);
       //first = halfHours[i].offsetTop;
       halfHourTarget[i].innerHTML = divvv;
       halfHourTarget[i].childNodes[0].childNodes[3].childNodes[3].innerHTML =
@@ -286,8 +313,8 @@ function DisplayEvent(startTime, endTime, namee, locc) {
   }
 
   let eventHeight = second - first;
-
   populateTarget.style.height = `${eventHeight - 3}px`;
+
   parseInt(eventHeight) > 92
     ? (populateTarget.style.flexDirection = "column")
     : (populateTarget.style.flexDirection = "row");
@@ -296,3 +323,4 @@ function DisplayEvent(startTime, endTime, namee, locc) {
 data.map((e) => {
   DisplayEvent(e.StartTime, e.EndTime, e.itemName, e.itemLoc);
 });
+console.log(map);
